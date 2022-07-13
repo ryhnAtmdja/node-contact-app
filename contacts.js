@@ -68,4 +68,11 @@ const onMakeFile = (name, phone, email) => {
   rl.close();
 };
 
-module.exports = { onFileValidation, onMakeFile };
+const showAllContacts = () => {
+  const file = fs.readFileSync("data/contacts.json", "utf-8");
+  const data = JSON.parse(file);
+  console.log(data);
+  rl.close();
+};
+
+module.exports = { onFileValidation, onMakeFile, showAllContacts };
