@@ -41,11 +41,18 @@ const onMakeFile = (name, phone, email) => {
 
   // cek validasi email
   const checkEmail = validator.isEmail(email);
-  if (email === "") {
-    console.log("email wajib diisi");
+  if (!checkEmail) {
+    console.log("Format email tidak benar");
     return rl.close();
-  } else if (!checkEmail) {
-    console.log("Formal email tidak benar");
+  }
+
+  // cek validasi nomor hp
+  const checkPhoneNum = validator.isMobilePhone(phone, "id-ID");
+  if (phone === "") {
+    console.log("Nomor hp wajib diisi");
+    return rl.close();
+  } else if (!checkPhoneNum) {
+    console.log("Nomor hp harus sesuai (+62)");
     return rl.close();
   }
 
@@ -57,6 +64,8 @@ const onMakeFile = (name, phone, email) => {
   });
 
   console.log(`Terima kasih sudah mengisikan data`);
+
+  rl.close();
 };
 
 module.exports = { onFileValidation, onMakeFile };
