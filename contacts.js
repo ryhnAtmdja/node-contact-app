@@ -98,9 +98,34 @@ const showDetailsContact = name => {
   rl.close();
 };
 
+const deleteContact = name => {
+  const result = onReadFile();
+  const contacts = result.filter(contact => {
+    const check = contact.name !== name;
+    if (check) {
+      return contact;
+    }
+    rl.close();
+  });
+
+  if (result.length === contacts.length) {
+    console.log(`${name} tidak ditemukan`);
+    rl.close();
+    return false;
+  }
+
+  fs.writeFile("data/contacts.json", JSON.stringify(contacts), err => {
+    if (err) throw err;
+    console.log(`${name} berhasil dihapus`);
+  });
+
+  rl.close();
+};
+
 module.exports = {
   onFileValidation,
   onMakeFile,
   showAllContacts,
   showDetailsContact,
+  deleteContact,
 };

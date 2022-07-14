@@ -3,6 +3,7 @@ const {
   onMakeFile,
   showAllContacts,
   showDetailsContact,
+  deleteContact,
 } = require("./contacts");
 const yargs = require("yargs");
 
