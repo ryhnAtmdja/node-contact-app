@@ -23,11 +23,15 @@ const onFileValidation = () => {
   }
 };
 
-const onMakeFile = (name, phone, email) => {
+const onReadFile = () => {
   const file = fs.readFileSync("data/contacts.json", "utf-8");
+  data = JSON.parse(file);
+  return data;
+};
+
+const onMakeFile = (name, phone, email) => {
   const contact = { name, phone, email };
-  const data = JSON.parse(file);
-  console.log(data);
+  const data = onReadFile();
 
   // cek duplikasi nama
   const checkNameDuplikat = data.find(dta => dta.name === name);
@@ -69,10 +73,34 @@ const onMakeFile = (name, phone, email) => {
 };
 
 const showAllContacts = () => {
-  const file = fs.readFileSync("data/contacts.json", "utf-8");
-  const data = JSON.parse(file);
-  console.log(data);
+  const result = onReadFile();
+  result.forEach((contact, i) => {
+    console.log(`${i + 1}. ${contact.name}, No HP : ${contact.phone}`);
+  });
   rl.close();
 };
 
-module.exports = { onFileValidation, onMakeFile, showAllContacts };
+// TODO => validasi walaupun penulisan huruf tidak uppercase/lwrcs
+const showDetailsContact = name => {
+  const result = onReadFile();
+  const foundContact = result.find(
+    dta => dta.name.toLowerCase() === name.toLowerCase()
+  );
+  if (!foundContact) {
+    console.log(`${name} tidak ditemukan`);
+  }
+
+  console.log(`Nama kontak : ${foundContact.name}`);
+  console.log(`no HP kontak ${name} : ${foundContact.phone}`);
+  if (foundContact.email) {
+    console.log(`Email kontak ${name} : ${foundContact.email}`);
+  }
+  rl.close();
+};
+
+module.exports = {
+  onFileValidation,
+  onMakeFile,
+  showAllContacts,
+  showDetailsContact,
+};
